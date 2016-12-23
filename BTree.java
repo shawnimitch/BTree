@@ -8,11 +8,13 @@ public class BTree {
 	
 	private Node root;
 	
+	/* Constructor */
 	public BTree() {
 		root = null;
 	}
 	
-	 public boolean isLeaf(Node p) {
+	/* isLeaf Method */
+	public boolean isLeaf(Node p) {
 		 
 		 if(p.c[0] == null)
 			 return true;
@@ -20,6 +22,7 @@ public class BTree {
 		 
 	 }
 	 
+	/* Height */
 	 public int height(){
 		 return height(root);
 	 }
@@ -31,6 +34,7 @@ public class BTree {
 		 return 1 + height(p.c[0]);
 	 }
 	
+	/* In Order Traversal */ 
 	public void inorder() {
 		
 		inorder(root);
@@ -49,6 +53,7 @@ public class BTree {
 		inorder(p.c[i]);
 	}
 	
+	/* Reverse Order Traversal */
 	public void reverseOrder() {
 		
 		reverseOrder(root);
@@ -67,6 +72,7 @@ public class BTree {
 		reverseOrder(p.c[i]);
 	}
 	
+	/* Display BTree */
 	public void display() {
 		display(root,0);
 	}
@@ -87,6 +93,7 @@ public class BTree {
 		}
 	}
 	
+	/* Search Method */
 	public boolean search(int x) {
 		
 		if(search(x,root)==null)
@@ -123,6 +130,7 @@ public class BTree {
 			return false;
 	}
 	
+	/* Insert Methods */
 	public void insert(int x) {
 		
 		intHolder iKey = new intHolder(0);
@@ -171,6 +179,7 @@ public class BTree {
 		return false;
 	}
 	
+	/* Insert by Shift */
 	private void insertByShift(Node p, int n, int iKey, Node iKeyRchild) {
 		
 		for(int i=p.numKeys;i > n; i--){
@@ -183,6 +192,7 @@ public class BTree {
 		p.numKeys++;
 	}
 	
+	/* Split Method */
 	private void split(Node p, int n, intHolder iKey, nodeHolder iKeyRchild) {
 		
 		int i, j, lastKey;
@@ -223,6 +233,7 @@ public class BTree {
 		iKeyRchild.value = newNode;
 	}
 	
+	/*Smallest */
 	public void smallest() {
 		smallest(root);
 	}
@@ -238,6 +249,7 @@ public class BTree {
 		
 	}
 	
+	/*Smallest at Depth */
 	public int smallestAtDepth(int d) {
 		
 		if(d <= height(root))
@@ -255,6 +267,7 @@ public class BTree {
 			return smallestAtDepth(p.c[0],d-1);
 	}
 	
+	/* Largest */
 	public void largest() {
 		largest(root);
 	}
@@ -269,6 +282,7 @@ public class BTree {
 			largest(p.c[n.value]);
 	}
 	
+	/*Largest At Depth */
 	public int largestAtDepth(int d) {
 		
 		if(d <= height(root))
@@ -288,6 +302,7 @@ public class BTree {
 			return largestAtDepth(p.c[p.numKeys],d-1);
 	}
 	
+	/* Count Nodes */
 	public int countNodes() {
 		
 		return countNodes(root);
@@ -304,27 +319,7 @@ public class BTree {
 		return i + countNodes(p.c[0]);
 	}
 	
-	public int countNodesAtDepth(int d) {
-		
-		if(d <= height(root))
-			return countNodesAtDepth(root,d);
-		return -1;
-	}
-	
-	private int countNodesAtDepth(Node p, int d) {
-		
-		if(d==0)
-			return 1;
-		if(d==1) {
-			//int j=0;
-			int i=0;
-			while(p.c[i] != null)
-				i++;
-			return i;
-		} else
-			return countNodesAtDepth(p.c[0],d-1);
-	}
-	
+	/* Number of Keys */
 	public int numKeys() {
 		
 		return numKeys(root);
@@ -349,92 +344,7 @@ public class BTree {
 		
 	}
 	
-	public int numKeysAtDepth(int d) {
-		
-		if(d <= height(root))
-			return numKeysAtDepth(root,d);
-		return -1;
-	}
-	
-	private int numKeysAtDepth(Node p, int d) {
-		
-		if(d==0)
-			return p.numKeys;
-		if(d==1) {
-			int j=0;
-			int i=0;
-			while(p.c[i] != null){
-				j+=p.c[i].numKeys;
-				i++;
-			}
-			return j;
-		} else
-			return numKeysAtDepth(p.c[0],d-1);
-	}
-	
-	public void sumOfAll() {
-		
-		sumOfAll(root);
-	}
-	
-	public void sumOfAll(Node p) {
-		
-		if(p==null){
-			System.out.println("The Tree is empty");
-			return;
-		}
-		
-		if(isLeaf(p)) {
-			int j=0;
-			for(int i=1;i<=p.numKeys;i++)
-				j+=p.key[i];
-			System.out.println("The sum of all the keys are : " + j);
-		} else {
-			int j=0;
-			for(int i=1;i<=p.numKeys;i++)
-				j+=p.key[i];
-			
-			for(int i=0;i<=p.numKeys;i++)
-				for(int k = 1;k<=p.c[i].numKeys;k++)
-					j+=p.c[i].key[k];
-			System.out.println("The sum of all the keys are : " + j);
-		}
-	}
-	
-	public int sumKeysAtDepth(int d) {
-		
-		if(d <= height(root))
-			return sumKeysAtDepth(root,d);
-		return -1;
-	}
-	
-	private int sumKeysAtDepth(Node p, int d) {
-		
-		if(d==0) {
-			int j=0;
-			for(int i=1;i<=p.numKeys;i++)
-				j+=p.key[i];
-			return j;
-		}
-		if(d==1) {
-			int j = 0;
-			for(int i=0;i<=p.numKeys;i++)
-				for(int k = 1;k<=p.c[i].numKeys;k++)
-					j+=p.c[i].key[k];
-			return j;
-		} else {
-			int j = 0;
-			while(d>1){
-				p=p.c[0];
-				d--;
-			}
-			for(int i=0;i<=p.numKeys;i++)
-				for(int k = 1;k<=p.c[i].numKeys;k++)
-					j+=p.c[i].key[k];
-			return j;
-		}
-	}
-	
+	/* Number of Leaves Method */
 	public int numLeaves() {
 		
 		return numLeaves(root);
@@ -450,7 +360,7 @@ public class BTree {
 			int c=0;
 			while(i<=p.numKeys && p.c[i] != null) {
 				if(isLeaf(p.c[i]))
-						c++;
+					c++;
 				i++;
 				//System.out.println("The number of Leaves our tree has is : " + c);	
 			}
